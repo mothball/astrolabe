@@ -3,7 +3,7 @@ name: Update TLEs
 on:
   schedule:
     # Every 2 hours at :17 past the hour (UTC) — not at :00 or :30
-    - cron: '17 */2 * * *'
+    - cron: '17 */4 * * *'
 
   # Allow manual trigger from GitHub UI
   workflow_dispatch:
