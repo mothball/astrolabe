@@ -16,18 +16,25 @@ from astrolabe.database import TLEDatabaseUpdater
 from astrolabe.config import CELESTRAK_URLS
 
 
-def update_active_tles():
+import argparse
+
+def update_active_tles(source='celestrak'):
     """Update only active satellite TLEs"""
-    print(f"Starting TLE update at {datetime.utcnow().isoformat()}")
+    print(f"Starting TLE update at {datetime.utcnow().isoformat()} using source: {source}")
 
     updater = TLEDatabaseUpdater()
 
     # Fetch latest active TLEs
-    url = CELESTRAK_URLS['active']
-    lines = updater.fetch_tle_data(url)
+    if source == 'spacetrack':
+        lines = updater.fetch_tle_data('spacetrack')
+        source_name = 'spacetrack-daily'
+    else:
+        url = CELESTRAK_URLS['active']
+        lines = updater.fetch_tle_data(url)
+        source_name = 'celestrak-daily'
 
     if lines:
-        updater.process_tles(lines, source='celestrak-daily')
+        updater.process_tles(lines, source=source_name)
         updater.print_stats()
 
         # Output GitHub Actions summary if in CI
@@ -43,7 +50,12 @@ def update_active_tles():
 
 def main():
     """Main entry point"""
-    stats = update_active_tles()
+    parser = argparse.ArgumentParser(description='Update TLEs from Celestrak or Space-Track')
+    parser.add_argument('--source', choices=['celestrak', 'spacetrack'], default='celestrak',
+                        help='Source to fetch TLEs from (default: celestrak)')
+    args = parser.parse_args()
+
+    stats = update_active_tles(source=args.source)
 
     if stats:
         if stats['tles_added'] > 0:

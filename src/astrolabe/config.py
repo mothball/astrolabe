@@ -11,14 +11,19 @@ load_dotenv(env_path)
 SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
 
+# Database Configuration
+DB_TYPE = os.environ.get('DB_TYPE', 'supabase')  # 'supabase' or 'sqlite'
+DB_PATH = os.environ.get('DB_PATH', 'astrolabe.db')
+
 # Validate configuration
 def validate_config():
     """Validate that required configuration is present"""
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        raise ValueError(
-            "Missing Supabase configuration. "
-            "Please set SUPABASE_URL and SUPABASE_KEY in .env file"
-        )
+    if DB_TYPE == 'supabase':
+        if not SUPABASE_URL or not SUPABASE_KEY:
+            raise ValueError(
+                "Missing Supabase configuration. "
+                "Please set SUPABASE_URL and SUPABASE_KEY in .env file"
+            )
 
 # Celestrak URLs
 CELESTRAK_URLS = {
@@ -28,3 +33,9 @@ CELESTRAK_URLS = {
     'starlink': 'https://celestrak.org/NORAD/elements/gp.php?GROUP=starlink&FORMAT=tle',
     'visual': 'https://celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=tle',
 }
+
+# Space-Track Configuration
+SPACETRACK_IDENTITY = os.environ.get('SPACETRACK_IDENTITY', '')
+SPACETRACK_PASSWORD = os.environ.get('SPACETRACK_PASSWORD', '')
+SPACETRACK_URL = "https://www.space-track.org/ajaxauth/login"
+SPACETRACK_API_URL = "https://www.space-track.org/basicspacedata/query/class/gp/EPOCH/%3Enow-30/orderby/NORAD_CAT_ID,EPOCH/format/3le"
