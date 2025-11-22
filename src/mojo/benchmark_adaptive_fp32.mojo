@@ -1,10 +1,10 @@
-from sgp4_adaptive import propagate_batch_adaptive, DEG2RAD, SIMD_WIDTH
+from sgp4_adaptive_fp32 import propagate_batch_adaptive, DEG2RAD, SIMD_WIDTH
 from python import Python
 from collections import List
 
 fn main() raises:
     print("============================================================")
-    print("ADAPTIVE SGP4 BENCHMARK")
+    print("ADAPTIVE SGP4 BENCHMARK (FP32)")
     print("============================================================")
     print("Detected SIMD Width: " + String(SIMD_WIDTH) + " x Float64")
     

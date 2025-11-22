@@ -1,10 +1,10 @@
-from sgp4_adaptive import propagate_batch_adaptive, DEG2RAD, SIMD_WIDTH
+from sgp4_adaptive_halley import propagate_batch_adaptive, DEG2RAD, SIMD_WIDTH
 from python import Python
 from collections import List
 
 fn main() raises:
     print("============================================================")
-    print("ADAPTIVE SGP4 BENCHMARK")
+    print("ADAPTIVE SGP4 BENCHMARK (Halley's Method)")
     print("============================================================")
     print("Detected SIMD Width: " + String(SIMD_WIDTH) + " x Float64")
     
@@ -18,7 +18,7 @@ fn main() raises:
     else:
         print("Architecture: SIMD width = " + String(SIMD_WIDTH))
     
-    var num_satellites = 10000
+    var num_satellites = 100000
     var num_times = 10
     
     var no_kozai = List[Float64]()
